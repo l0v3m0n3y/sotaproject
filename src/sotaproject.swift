@@ -73,6 +73,17 @@ public class Sotaproject{
         return try JSONSerialization.jsonObject(with: data)
     }
     
+    public func get_publications_by_slug(slug: String) async throws -> Any {
+        guard let url = URL(string: "\(api)/publication/\(slug)") else {
+            throw NSError(domain: "Invalid URL", code: -1)
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+        let (data, _) = try await URLSession.shared.data(for: request)
+        return try JSONSerialization.jsonObject(with: data)
+    }
+    
     public func get_publications_by_category(category: String,limit: Int = 50,offset: Int = 0,ignore_important: Bool = true) async throws -> Any {
         guard let url = URL(string: "\(api)/publications?categories=\(category)&limit=\(limit)&offset=\(offset)&ignore_important=\(ignore_important)") else {
             throw NSError(domain: "Invalid URL", code: -1)
